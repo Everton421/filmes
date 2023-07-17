@@ -9,7 +9,9 @@ import  {Link} from 'react-router-dom'
 // https://api.themoviedb.org/3/movie/now_playing?api_key=b5b128dcef2492da021f6f8c079540a0
  
 const Home =()=>{
+
     const [filmes , setFilmes] = useState([])
+    const [loading, setLoading] = useState(true)
 
     useEffect(
         ()=>{
@@ -23,11 +25,20 @@ const Home =()=>{
                 })
                 //console.log(response.data.results.slice(0,10));
                 setFilmes(response.data.results.slice(0,10))
+                setLoading(false)
             }
 
             loadfilmes();
         },[]
     )
+
+            if(loading){
+                return(
+                    <div className="loading">
+                        <h2>carregando filmes...</h2>
+                    </div>
+                )
+            }
     return(
             <div className="container">
                <div className="lista-filmes">
@@ -36,6 +47,7 @@ const Home =()=>{
                             <article>
                                 <strong key={filme.id}> {filme.title}</strong>
                                 <img src={`https://image.tmdb.org/t/p/original/${filme.poster_path}`} alt={filme.title}/>
+                               
                                <Link to={`/filme/${filme.id} `} >Acessar</Link>
                             </article> 
                         )
@@ -46,3 +58,5 @@ const Home =()=>{
     }
 
     export default Home;
+
+    
